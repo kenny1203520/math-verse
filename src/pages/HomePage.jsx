@@ -1,4 +1,4 @@
-import { ArrowRight, BadgeCheck, Lightbulb, Orbit, Telescope } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Lightbulb, Orbit, Rocket, Shapes, Telescope, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const HomePage = () => {
@@ -29,6 +29,35 @@ const HomePage = () => {
           </div>
           <Link to="/games/line-identity" className="play-link">開始挑戰</Link>
         </article>
+      </section>
+
+      <section className="missions card stagger-2-5">
+        <h2>Math-Verse 核心冒險</h2>
+        <div className="mission-grid">
+          <article className="mission-card grade-7">
+            <div className="mission-icon">
+              <Rocket size={32} />
+            </div>
+            <div className="mission-content">
+              <p className="tag">七年級任務</p>
+              <h3>星際資源與能量調控</h3>
+              <p>掌握比與比例式，解鎖星際推進器，並利用不等式突破量子迷宮。</p>
+              <Link to="/games/interstellar" className="btn btn-sm btn-primary">進入任務</Link>
+            </div>
+          </article>
+
+          <article className="mission-card grade-8">
+            <div className="mission-icon">
+              <Shapes size={32} />
+            </div>
+            <div className="mission-content">
+              <p className="tag">八年級任務</p>
+              <h3>幾何遺跡與基地建設</h3>
+              <p>在遺跡中破解平行線機關，利用全等與畢氏定理建設強大的探測基地。</p>
+              <Link to="/games/geometric-base" className="btn btn-sm btn-primary">進入任務</Link>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section className="insight card stagger-3" id="roadmap">

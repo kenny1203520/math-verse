@@ -477,3 +477,401 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* --- Interactive Mission Layout --- */
+
+.mission-page-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 32px;
+  height: calc(100vh - 160px);
+  min-height: 650px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.scene-container {
+  background: #0a0a0a;
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 0 80px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mission-header {
+  padding: 0 10px;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progress-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.progress-pills .pill {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.3s ease;
+}
+
+.progress-pills .pill.active {
+  background: var(--primary);
+  transform: scale(1.2);
+}
+
+.progress-pills .pill.completed {
+  background: var(--teal);
+}
+
+.question-content {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(12px);
+}
+
+.unit-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: rgba(0, 87, 217, 0.1);
+  padding: 4px 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.scenario-text {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.main-question {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
+.interaction-area {
+  flex: 1;
+}
+
+.input-wrapper label,
+.options-list label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.numeric-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.numeric-control input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  background: white;
+  font-size: 1.4rem;
+  font-weight: 700;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.numeric-control input:focus {
+  border-color: var(--primary);
+}
+
+.options-list {
+  display: grid;
+  gap: 10px;
+}
+
+.option-card {
+  text-align: left;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.option-card:hover {
+  border-color: var(--primary);
+  transform: translateX(4px);
+}
+
+.option-card.selected {
+  border-color: var(--primary);
+  background: rgba(0, 87, 217, 0.05);
+  font-weight: 700;
+}
+
+.status-box {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.status-box.success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-box.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.hint-card {
+  margin-top: 16px;
+  padding: 12px;
+  background: #fffbeb;
+  border-radius: 12px;
+  border: 1px solid #fde68a;
+  display: flex;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #92400e;
+}
+
+.hint-card p {
+  margin: 0;
+}
+
+.action-bar {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+
+.btn-primary,
+.btn-success,
+.btn-secondary {
+  flex: 1;
+  padding: 14px;
+  border-radius: 16px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-success {
+  background: var(--teal);
+  color: white;
+}
+
+.btn-secondary {
+  background: var(--border);
+  color: var(--ink);
+  flex: 0 0 auto;
+  padding: 14px 20px;
+}
+
+.exit-link {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 900px) {
+  .mission-page-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  
+  .scene-container {
+    height: 300px;
+  }
+}
+
+/* --- Scene Specific Visuals --- */
+
+.scene-view {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.geo-svg {
+  width: 90%;
+  height: auto;
+  max-height: 80%;
+}
+
+.scene-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 16px;
+  border-radius: 99px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.floating {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.core-visual {
+  position: relative;
+}
+
+.core-stats {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.core-stats .stat {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: white;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.power-meter {
+  text-align: center;
+}
+
+.threshold-label {
+  color: #3b82f6;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: -10px;
+}
+
+.asteroid-belt {
+  position: relative;
+  width: 300px;
+  height: 200px;
+}
+
+.asteroid {
+  width: 80px;
+  height: 80px;
+  background: #475569;
+  border-radius: 20% 40% 30% 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: inset -10px -10px 0 rgba(0,0,0,0.2);
+}
+
+.mining-progress {
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #22c55e;
+  width: 0;
+  animation: fillProgress linear infinite;
+}
+
+@keyframes fillProgress {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.bot-fleet {
+  position: absolute;
+  inset: 0;
+}
+
+.bot-item {
+  color: #94a3b8;
+  position: absolute;
+  animation: botHover 2s ease-in-out infinite;
+}
+
+@keyframes botHover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.bot-item:nth-child(1) { top: 20%; left: 10%; }
+.bot-item:nth-child(2) { top: 70%; left: 15%; }
+.bot-item:nth-child(3) { top: 30%; right: 10%; }
+.bot-item:nth-child(4) { top: 80%; right: 15%; }
+.bot-item:nth-child(n+5) { display: none; } /* Limit visible bots */
