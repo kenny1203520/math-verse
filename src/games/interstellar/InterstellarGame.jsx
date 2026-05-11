@@ -3,11 +3,13 @@ import { ArrowLeft, ArrowRight, HelpCircle, Trophy, Target } from 'lucide-react'
 import { Link } from 'react-router-dom';
 import InterstellarEngine from './domain/InterstellarEngine';
 import InterstellarScene from './InterstellarScene';
+import SpaceshipIntro from '../../components/SpaceshipIntro';
 
 const InterstellarGame = () => {
   const engine = useMemo(() => new InterstellarEngine(), []);
   const [view, setView] = useState(engine.getSnapshot());
   const [showHint, setShowHint] = useState(false);
+  const [gameState, setGameState] = useState('intro'); // 'intro', 'playing', 'completed'
 
   useEffect(() => {
     setShowHint(false);
@@ -29,6 +31,10 @@ const InterstellarGame = () => {
   };
 
   const currentQuestion = view.state;
+
+  if (gameState === 'intro') {
+    return <SpaceshipIntro onComplete={() => setGameState('playing')} text="進入 Math-Verse 星際座標..." />;
+  }
 
   if (view.currentLevel >= view.totalLevels || !currentQuestion.id) {
     return (
@@ -94,13 +100,13 @@ const InterstellarGame = () => {
             </div>
 
             {view.showSuccess && (
-              <div className="status-box success">
+               <div className="status-box success stagger-1">
                 正確！數值已穩定，授權通過。
               </div>
             )}
 
             {showHint && (
-              <div className="hint-card">
+              <div className="hint-card stagger-1">
                 <HelpCircle size={16} />
                 <p>{currentQuestion.hint}</p>
               </div>

@@ -843,3 +843,238 @@ body {
     gap: 12px;
   }
 }
+
+/* --- Spaceship Intro Animation --- */
+.spaceship-intro-container {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 1s ease-in-out;
+}
+
+.spaceship-intro-container.arriving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.warp-tunnel {
+  position: absolute;
+  inset: 0;
+  perspective: 1000px;
+  overflow: hidden;
+}
+
+.warp-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+  animation: warpSpeed linear infinite;
+  opacity: 0;
+}
+
+@keyframes warpSpeed {
+  0% { transform: scale(1) translateZ(-1000px); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: scale(5) translateZ(100px); opacity: 0; }
+}
+
+.spaceship-model {
+  position: relative;
+  z-index: 10;
+  animation: flyIn 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes flyIn {
+  0% { transform: translateY(200px) scale(0.5); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.spaceship-intro-container.warp .spaceship-model {
+  animation: warpShake 0.1s infinite;
+}
+
+@keyframes warpShake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  25% { transform: translate(-1px, -1px) rotate(-1deg); }
+  50% { transform: translate(-1px, 1px) rotate(1deg); }
+  75% { transform: translate(1px, -1px) rotate(0deg); }
+  100% { transform: translate(1px, 1px) rotate(0deg); }
+}
+
+.engine-fire {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 60px;
+  background: linear-gradient(to bottom, #fff, #3b82f6, transparent);
+  filter: blur(5px);
+  border-radius: 50%;
+  animation: engineFlicker 0.1s infinite alternate;
+}
+
+@keyframes engineFlicker {
+  from { height: 50px; opacity: 0.8; }
+  to { height: 70px; opacity: 1; }
+}
+
+.spaceship-intro-container.warp .engine-fire {
+  height: 150px;
+  bottom: -130px;
+  background: linear-gradient(to bottom, #fff, #8b5cf6, transparent);
+}
+
+.intro-text {
+  position: absolute;
+  bottom: 20%;
+  text-align: center;
+  z-index: 10;
+}
+
+.intro-text h2 {
+  font-family: var(--font-mono);
+  color: var(--primary);
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.loading-bar {
+  width: 300px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.loading-progress {
+  height: 100%;
+  background: var(--primary);
+  width: 0;
+  transition: width 3s linear;
+}
+
+.spaceship-intro-container.warp .loading-progress {
+  width: 100%;
+}
+
+/* --- RPG Interactive Scene --- */
+.rpg-scene {
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20zM20 0h20v20H20V0z' fill='rgba(59,130,246,0.03)' fill-rule='evenodd'/%3E%3C/svg%3E");
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.market-layout {
+  display: flex;
+  gap: 40px;
+  perspective: 1000px;
+}
+
+.stall {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border);
+  border-radius: 24px 24px 12px 12px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(59, 130, 246, 0.1);
+  transform-style: preserve-3d;
+  transition: all 0.3s ease;
+  min-width: 200px;
+}
+
+.stall::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 40px;
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.3), transparent);
+  border-radius: 50%;
+  filter: blur(10px);
+}
+
+.stall:hover {
+  transform: translateZ(20px) translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 0 30px rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.6);
+}
+
+.stall-hologram {
+  position: relative;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.stall-hologram::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%) scaleY(0.3);
+  width: 60px;
+  height: 20px;
+  background: var(--primary);
+  filter: blur(8px);
+  opacity: 0.5;
+  border-radius: 50%;
+}
+
+.stall-sign {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  padding: 12px 20px;
+  text-align: center;
+  font-family: var(--font-mono);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+.stall-sign .title {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.stall-sign .value {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--primary);
+}
+
+.stall.active {
+  border-color: var(--teal);
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.3), inset 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.stall.active .stall-sign {
+  border-color: var(--teal);
+}
+
+.stall.active .stall-sign .value {
+  text-shadow: 0 0 10px var(--teal);
+}
+
+.stall.active .stall-hologram::after {
+  background: var(--teal);
+}
