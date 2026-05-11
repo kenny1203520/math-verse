@@ -1,14 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
 :root {
-  --bg: #fcfbf7;
-  --bg-soft: #f7f4ea;
-  --ink: #16213f;
-  --ink-soft: #49536f;
-  --primary: #0057d9;
-  --secondary: #f47f20;
-  --teal: #0a8f8a;
-  --surface: rgba(255, 255, 255, 0.82);
-  --border: rgba(22, 33, 63, 0.12);
-  --shadow: 0 18px 60px rgba(9, 33, 62, 0.11);
+  /* Deep Space Theme Variables */
+  --bg: #050510;
+  --bg-soft: #0a0a1a;
+  --ink: #e2e8f0;
+  --ink-soft: #94a3b8;
+  --primary: #3b82f6; /* Holo Blue */
+  --secondary: #8b5cf6; /* Neon Purple */
+  --teal: #10b981; /* Success Green */
+  --surface: rgba(15, 23, 42, 0.7);
+  --border: rgba(59, 130, 246, 0.3);
+  --shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+  --font-mono: 'Space Mono', 'Chakra Petch', monospace;
 }
 
 * {
@@ -23,12 +28,14 @@ body,
 }
 
 body {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: 'Inter', 'Noto Sans TC', sans-serif;
   color: var(--ink);
-  background:
-    radial-gradient(circle at 6% 8%, rgba(244, 127, 32, 0.14), transparent 28%),
-    radial-gradient(circle at 90% 0%, rgba(0, 87, 217, 0.18), transparent 32%),
-    linear-gradient(180deg, #fffef9 0%, var(--bg-soft) 100%);
+  background: var(--bg);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='1' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E");
+  background-size: cover, cover, 100px 100px;
 }
 
 .site-shell {
@@ -43,23 +50,23 @@ body {
   border-radius: 50%;
   pointer-events: none;
   z-index: -1;
-  filter: blur(4px);
+  filter: blur(40px);
 }
 
 .orb-a {
-  width: 380px;
-  height: 380px;
-  background: radial-gradient(circle at 30% 30%, rgba(0, 87, 217, 0.24), transparent 72%);
-  right: -120px;
-  top: -80px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent 70%);
+  right: -100px;
+  top: -100px;
 }
 
 .orb-b {
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle at 42% 42%, rgba(10, 143, 138, 0.21), transparent 72%);
-  left: -160px;
-  bottom: -190px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent 70%);
+  left: -200px;
+  bottom: -200px;
 }
 
 .container {
@@ -79,11 +86,12 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--ink);
-  font-family: 'Chakra Petch', sans-serif;
+  color: var(--primary);
+  font-family: var(--font-mono);
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: 0.04em;
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
 }
 
 .nav-links {
@@ -101,13 +109,16 @@ body {
   align-items: center;
   gap: 6px;
   font-size: 0.92rem;
+  font-family: var(--font-mono);
+  transition: all 0.3s;
 }
 
 .nav-link:hover,
 .nav-link.active {
-  border-color: var(--border);
-  background: rgba(255, 255, 255, 0.76);
-  color: var(--ink);
+  color: var(--primary);
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.2) inset;
 }
 
 .page-enter {
@@ -128,7 +139,7 @@ body {
 
 .home-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1fr; /* Single column for starmap feel */
   gap: 20px;
   padding-bottom: 34px;
 }
@@ -175,134 +186,194 @@ body {
   border-radius: 999px;
   padding: 4px 12px;
   color: var(--primary);
-  background: rgba(0, 87, 217, 0.1);
+  background: rgba(59, 130, 246, 0.1);
   font-size: 0.78rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+.hero {
+  text-align: center;
+  padding: 60px 20px !important;
+  background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 70%) !important;
 }
 
 .hero h1 {
   margin: 12px 0;
-  font-family: 'Chakra Petch', sans-serif;
-  font-size: clamp(1.9rem, 4vw, 3.05rem);
-  line-height: 1.06;
+  font-family: var(--font-mono);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.2;
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
 }
 
 .hero-desc {
-  margin: 0;
+  margin: 0 auto;
+  max-width: 600px;
   color: var(--ink-soft);
   line-height: 1.7;
 }
 
 .hero-actions {
-  margin-top: 24px;
+  margin-top: 32px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  justify-content: center;
+  gap: 16px;
 }
 
 .btn {
   text-decoration: none;
   border-radius: 14px;
-  padding: 11px 16px;
+  padding: 12px 24px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-weight: 700;
   border: 1px solid transparent;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s;
 }
 
 .btn-primary {
   color: white;
-  background: linear-gradient(135deg, var(--primary), #237dfc);
+  background: rgba(59, 130, 246, 0.2);
+  border-color: var(--primary);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3) inset;
+}
+
+.btn-primary:hover {
+  background: var(--primary);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+  transform: translateY(-2px);
 }
 
 .btn-ghost {
-  color: var(--ink);
-  border-color: var(--border);
-  background: rgba(255, 255, 255, 0.72);
+  color: var(--primary);
+  border-color: rgba(59, 130, 246, 0.5);
+  background: transparent;
 }
 
-.spotlight h2,
-.insight h2,
-.pillars h2 {
-  margin-top: 0;
-  margin-bottom: 14px;
-  font-family: 'Chakra Petch', sans-serif;
-  font-size: 1.4rem;
+.btn-ghost:hover {
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.2) inset;
 }
 
-.game-card.featured {
-  border-radius: 18px;
-  border: 1px dashed rgba(0, 87, 217, 0.35);
-  padding: 16px;
-  background: linear-gradient(145deg, rgba(0, 87, 217, 0.08), rgba(255, 255, 255, 0.8));
-}
-
-.game-card .tag {
-  display: inline-block;
-  font-size: 0.74rem;
-  border-radius: 999px;
-  padding: 3px 10px;
-  color: var(--teal);
-  background: rgba(10, 143, 138, 0.12);
-  margin-bottom: 6px;
-}
-
-.game-card h3 {
-  margin: 0;
-}
-
-.game-card p {
-  color: var(--ink-soft);
-  line-height: 1.65;
-}
-
-.play-link {
-  text-decoration: none;
-  color: white;
-  background: var(--secondary);
-  border-radius: 12px;
-  padding: 8px 14px;
-  display: inline-block;
-  font-weight: 700;
-}
-
-.insight ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 12px;
-}
-
-.insight li {
+.missions h2,
+.spotlight h2 {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: var(--ink-soft);
-}
-
-.pillar-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 12px;
+  margin-top: 0;
 }
 
-.pillar-list article {
-  border-radius: 16px;
+.missions h2::before,
+.spotlight h2::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 24px;
+  background: var(--primary);
+  border-radius: 4px;
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.mission-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 20px;
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.7);
-  padding: 14px;
+  background: rgba(15, 23, 42, 0.6);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
 }
 
-.pillar-list h3 {
-  margin: 8px 0;
+.mission-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
-.pillar-list p {
-  margin: 0;
+.mission-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.mission-card:hover::after {
+  opacity: 1;
+}
+
+.mission-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.grade-7 .mission-icon {
+  color: #60a5fa;
+  box-shadow: 0 0 15px rgba(96, 165, 250, 0.3);
+}
+
+.grade-8 .mission-icon {
+  color: #f59e0b;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+}
+
+.grade-line .mission-icon {
+  color: #8b5cf6;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+.mission-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mission-content h3 {
+  margin: 4px 0 8px;
+  font-size: 1.25rem;
+  font-family: var(--font-mono);
+}
+
+.mission-content p {
+  margin: 0 0 16px;
+  font-size: 0.9rem;
   color: var(--ink-soft);
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  border-radius: 10px;
+  text-align: center;
+  justify-content: center;
 }
 
 .game-page {
@@ -323,15 +394,17 @@ body {
 .panel h2,
 .panel h3 {
   margin-top: 0;
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: var(--font-mono);
+  color: var(--primary);
 }
 
 .game-canvas-wrap {
   border: 1px solid var(--border);
   border-radius: 20px;
-  background: white;
+  background: #0a0a0a;
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
 }
 
 .game-canvas-wrap svg {
@@ -348,25 +421,27 @@ body {
   background: rgba(16, 185, 129, 0.12);
   display: grid;
   place-items: center;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
 }
 
 .success-card {
-  background: white;
+  background: rgba(15, 23, 42, 0.9);
   border-radius: 18px;
-  border: 1px solid rgba(16, 185, 129, 0.34);
-  padding: 20px;
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  padding: 30px;
   text-align: center;
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
 }
 
 .game-equation {
   margin-top: 16px;
   border-radius: 16px;
   padding: 14px;
-  background: #0f1c35;
-  color: #d2deff;
-  font-family: 'Chakra Petch', sans-serif;
+  background: rgba(0,0,0,0.5);
+  color: var(--primary);
+  font-family: var(--font-mono);
   font-size: 1.32rem;
+  border: 1px solid var(--border);
 }
 
 .game-equation strong {
@@ -402,7 +477,7 @@ body {
 .meta-row {
   border: 1px solid var(--border);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.76);
+  background: rgba(0, 0, 0, 0.3);
   padding: 10px 12px;
   display: flex;
   justify-content: space-between;
@@ -425,57 +500,35 @@ body {
   padding: 10px 14px;
   font-weight: 700;
   cursor: pointer;
+  font-family: var(--font-mono);
 }
 
 .btn-action.primary {
-  background: var(--teal);
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border-color: #10b981;
+}
+
+.btn-action.primary:hover {
+  background: #10b981;
   color: white;
 }
 
 .btn-action.light {
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.05);
   border-color: var(--border);
   color: var(--ink);
+}
+
+.btn-action.light:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .footer {
   padding: 8px 0 24px;
   color: var(--ink-soft);
   font-size: 0.9rem;
-}
-
-@media (max-width: 980px) {
-  .home-grid,
-  .game-page {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 680px) {
-  .topbar {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .nav-links {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .card,
-  .panel {
-    padding: 18px;
-    border-radius: 18px;
-  }
-
-  .hero h1 {
-    font-size: 1.9rem;
-  }
-
-  .pillar-list {
-    grid-template-columns: 1fr;
-  }
+  text-align: center;
 }
 
 /* --- Interactive Mission Layout --- */
@@ -496,7 +549,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 0 80px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 80px rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -528,13 +581,14 @@ body {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--border);
+  background: rgba(255,255,255,0.1);
   transition: all 0.3s ease;
 }
 
 .progress-pills .pill.active {
   background: var(--primary);
   transform: scale(1.2);
+  box-shadow: 0 0 10px var(--primary);
 }
 
 .progress-pills .pill.completed {
@@ -557,10 +611,11 @@ body {
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--primary);
-  background: rgba(0, 87, 217, 0.1);
+  background: rgba(59, 130, 246, 0.1);
   padding: 4px 10px;
   border-radius: 8px;
   margin-bottom: 12px;
+  font-family: var(--font-mono);
 }
 
 .scenario-text {
@@ -582,8 +637,7 @@ body {
   flex: 1;
 }
 
-.input-wrapper label,
-.options-list label {
+.input-wrapper label {
   display: block;
   font-size: 0.85rem;
   color: var(--ink-soft);
@@ -602,41 +656,22 @@ body {
   padding: 14px;
   border-radius: 16px;
   border: 2px solid var(--border);
-  background: white;
+  background: rgba(0,0,0,0.3);
+  color: white;
   font-size: 1.4rem;
   font-weight: 700;
   outline: none;
   transition: border-color 0.2s;
+  font-family: var(--font-mono);
 }
 
 .numeric-control input:focus {
   border-color: var(--primary);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
 }
 
-.options-list {
-  display: grid;
-  gap: 10px;
-}
-
-.option-card {
-  text-align: left;
-  padding: 14px 18px;
-  border-radius: 16px;
-  border: 2px solid var(--border);
-  background: white;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.95rem;
-}
-
-.option-card:hover {
-  border-color: var(--primary);
-  transform: translateX(4px);
-}
-
-.option-card.selected {
-  border-color: var(--primary);
-  background: rgba(0, 87, 217, 0.05);
+.unit-tag {
+  color: var(--ink-soft);
   font-weight: 700;
 }
 
@@ -650,25 +685,21 @@ body {
 }
 
 .status-box.success {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.status-box.error {
-  background: #fee2e2;
-  color: #991b1b;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid #10b981;
 }
 
 .hint-card {
   margin-top: 16px;
   padding: 12px;
-  background: #fffbeb;
+  background: rgba(245, 158, 11, 0.1);
   border-radius: 12px;
-  border: 1px solid #fde68a;
+  border: 1px solid rgba(245, 158, 11, 0.3);
   display: flex;
   gap: 8px;
   font-size: 0.85rem;
-  color: #92400e;
+  color: #fcd34d;
 }
 
 .hint-card p {
@@ -695,23 +726,49 @@ body {
   justify-content: center;
   gap: 8px;
   transition: all 0.2s;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
 }
 
 .btn-primary {
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.btn-primary:hover:not(:disabled) {
   background: var(--primary);
   color: white;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn-success {
-  background: var(--teal);
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border: 1px solid #10b981;
+}
+
+.btn-success:hover {
+  background: #10b981;
   color: white;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
 }
 
 .btn-secondary {
-  background: var(--border);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
   color: var(--ink);
   flex: 0 0 auto;
   padding: 14px 20px;
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
 }
 
 .exit-link {
@@ -721,21 +778,14 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  transition: color 0.2s;
 }
 
-@media (max-width: 900px) {
-  .mission-page-layout {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-  
-  .scene-container {
-    height: 300px;
-  }
+.exit-link:hover {
+  color: var(--primary);
 }
 
 /* --- Scene Specific Visuals --- */
-
 .scene-view {
   width: 100%;
   height: 100%;
@@ -750,6 +800,7 @@ body {
   width: 90%;
   height: auto;
   max-height: 80%;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
 }
 
 .scene-hint {
@@ -777,101 +828,18 @@ body {
   50% { transform: translateY(-15px); }
 }
 
-.core-visual {
-  position: relative;
+@media (max-width: 980px) {
+  .home-grid,
+  .game-page,
+  .mission-page-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
 }
 
-.core-stats {
-  position: absolute;
-  bottom: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 12px;
-  white-space: nowrap;
+@media (max-width: 680px) {
+  .topbar {
+    flex-direction: column;
+    gap: 12px;
+  }
 }
-
-.core-stats .stat {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 4px 10px;
-  border-radius: 999px;
-  color: white;
-  font-size: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.power-meter {
-  text-align: center;
-}
-
-.threshold-label {
-  color: #3b82f6;
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin-top: -10px;
-}
-
-.asteroid-belt {
-  position: relative;
-  width: 300px;
-  height: 200px;
-}
-
-.asteroid {
-  width: 80px;
-  height: 80px;
-  background: #475569;
-  border-radius: 20% 40% 30% 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: inset -10px -10px 0 rgba(0,0,0,0.2);
-}
-
-.mining-progress {
-  position: absolute;
-  bottom: -20px;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: #22c55e;
-  width: 0;
-  animation: fillProgress linear infinite;
-}
-
-@keyframes fillProgress {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-.bot-fleet {
-  position: absolute;
-  inset: 0;
-}
-
-.bot-item {
-  color: #94a3b8;
-  position: absolute;
-  animation: botHover 2s ease-in-out infinite;
-}
-
-@keyframes botHover {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-.bot-item:nth-child(1) { top: 20%; left: 10%; }
-.bot-item:nth-child(2) { top: 70%; left: 15%; }
-.bot-item:nth-child(3) { top: 30%; right: 10%; }
-.bot-item:nth-child(4) { top: 80%; right: 15%; }
-.bot-item:nth-child(n+5) { display: none; } /* Limit visible bots */

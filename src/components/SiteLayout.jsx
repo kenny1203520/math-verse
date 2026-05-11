@@ -14,14 +14,14 @@ const SiteLayout = () => {
         <nav className="nav-links">
           <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
             <Compass size={16} />
-            首頁
+            星圖導航
           </NavLink>
           <NavLink
             to="/games/line-identity"
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
             <Gamepad2 size={16} />
-            直線身分證
+            躍遷引擎
           </NavLink>
         </nav>
       </header>

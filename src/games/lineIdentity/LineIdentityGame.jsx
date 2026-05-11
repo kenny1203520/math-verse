@@ -39,10 +39,10 @@ const LineIdentityGame = () => {
     <div className="game-page">
       <section className="panel">
         <h2>
-          <TrendingUp size={20} /> 直線身分證：y = ax + b
+          <TrendingUp size={20} /> 躍遷引擎校準：y = ax + b
         </h2>
         <p>
-          調整斜率 a 與截距 b，讓你的藍線完全重合目標線。重合即得分並解鎖下一題。
+          調整牽引光束的斜率 a 與截距 b，讓你的藍線完全重合目標航道。重合即完成校準並解鎖下一個航點。
         </p>
 
         <div className="game-canvas-wrap">
@@ -80,9 +80,9 @@ const LineIdentityGame = () => {
             <div className="success-overlay">
               <div className="success-card">
                 <CheckCircle2 size={44} color="#0aa06f" />
-                <h3>完美匹配</h3>
+                <h3>航道已鎖定</h3>
                 <button type="button" className="btn-action primary" onClick={nextChallenge}>
-                  下一題
+                  前往下一航點
                 </button>
               </div>
             </div>
@@ -150,7 +150,7 @@ const LineIdentityGame = () => {
 
         <div className="action-row">
           <button type="button" className="btn-action light" onClick={nextChallenge}>
-            跳過題目
+            切換航點
           </button>
           <button type="button" className="btn-action light" onClick={resetAll}>
             <RotateCcw size={14} /> 全部重來

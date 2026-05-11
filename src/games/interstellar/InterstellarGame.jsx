@@ -1,58 +1,46 @@
-import React, { useState, useMemo } from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle, HelpCircle, Rocket, Trophy, Target } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { ArrowLeft, ArrowRight, HelpCircle, Trophy, Target } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { generateInterstellarQuestions } from './InterstellarQuestions';
+import InterstellarEngine from './domain/InterstellarEngine';
 import InterstellarScene from './InterstellarScene';
 
 const InterstellarGame = () => {
-  const INTERSTELLAR_QUESTIONS = useMemo(() => generateInterstellarQuestions(), []);
-  const [currentIdx, setCurrentIdx] = useState(0);
-  const [userInput, setUserInput] = useState('');
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [feedback, setFeedback] = useState(null); // { type: 'success' | 'error', msg: string }
+  const engine = useMemo(() => new InterstellarEngine(), []);
+  const [view, setView] = useState(engine.getSnapshot());
   const [showHint, setShowHint] = useState(false);
-  const [isCompleted, setIsCompleted] = useState(false);
 
-  const currentQuestion = INTERSTELLAR_QUESTIONS[currentIdx];
+  useEffect(() => {
+    setShowHint(false);
+  }, [view.currentLevel]);
+
+  const handleInputChange = (value) => {
+    engine.setUserInput(value);
+    setView(engine.getSnapshot());
+  };
 
   const handleSubmit = () => {
-    let isCorrect = false;
-    if (currentQuestion.type === 'numeric') {
-      isCorrect = parseInt(userInput) === currentQuestion.answer;
-    } else {
-      isCorrect = selectedOption === currentQuestion.answer;
-    }
-
-    if (isCorrect) {
-      setFeedback({ type: 'success', msg: '太棒了！解題成功，能量槽已充填。' });
-    } else {
-      setFeedback({ type: 'error', msg: '偵測到運算錯誤，請檢查邏輯後再試一次。' });
-    }
+    engine.evaluateMatch();
+    setView(engine.getSnapshot());
   };
 
   const nextQuestion = () => {
-    if (currentIdx < INTERSTELLAR_QUESTIONS.length - 1) {
-      setCurrentIdx(currentIdx + 1);
-      setUserInput('');
-      setSelectedOption(null);
-      setFeedback(null);
-      setShowHint(false);
-    } else {
-      setIsCompleted(true);
-    }
+    engine.nextLevel();
+    setView(engine.getSnapshot());
   };
 
-  if (isCompleted) {
+  const currentQuestion = view.state;
+
+  if (view.currentLevel >= view.totalLevels || !currentQuestion.id) {
     return (
       <div className="mission-container">
         <div className="card congrats-card stagger-1">
           <div className="congrats-icon">
-            <Trophy size={80} />
+            <Trophy size={80} color="#f59e0b" />
           </div>
           <h2>任務達成！</h2>
           <p>你已成功完成「星際資源與能量調控」的所有挑戰，Math-Verse 的航道已為你開啟。</p>
           <div className="hero-actions" style={{ justifyContent: 'center' }}>
-            <Link to="/" className="btn btn-primary">返回基地首頁</Link>
+            <Link to="/" className="btn btn-primary">返回星圖導航</Link>
           </div>
         </div>
       </div>
@@ -62,7 +50,7 @@ const InterstellarGame = () => {
   return (
     <div className="mission-page-layout">
       <div className="scene-container stagger-1">
-        <InterstellarScene question={currentQuestion} state={{ userInput, selectedOption }} />
+        <InterstellarScene question={currentQuestion} state={view.state} />
       </div>
 
       <div className="controls-container stagger-2">
@@ -70,12 +58,16 @@ const InterstellarGame = () => {
           <div className="header-top">
             <p className="kicker">Grade 7 Mission</p>
             <div className="progress-pills">
-              {INTERSTELLAR_QUESTIONS.map((_, i) => (
+              {[...Array(view.totalLevels)].map((_, i) => (
                 <div 
                   key={i} 
-                  className={`pill ${i === currentIdx ? 'active' : ''} ${i < currentIdx ? 'completed' : ''}`}
+                  className={`pill ${i === view.currentLevel ? 'active' : ''} ${i < view.currentLevel ? 'completed' : ''}`}
                 />
               ))}
+            </div>
+            <div className="score-badge">
+              <Trophy size={14} color="#f59e0b" />
+              <span>{view.score} PTS</span>
             </div>
           </div>
           <h1>{currentQuestion.title}</h1>
@@ -87,39 +79,23 @@ const InterstellarGame = () => {
           <p className="main-question">{currentQuestion.question}</p>
 
           <div className="interaction-area">
-            {currentQuestion.type === 'numeric' ? (
-              <div className="input-wrapper">
-                <label>調整數值：</label>
-                <div className="numeric-control">
-                  <input 
-                    type="number" 
-                    placeholder="0" 
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    disabled={feedback?.type === 'success'}
-                  />
-                  <span className="unit-tag">{currentQuestion.unit_label}</span>
-                </div>
+            <div className="input-wrapper">
+              <label>調整數值：</label>
+              <div className="numeric-control">
+                <input 
+                  type="number" 
+                  placeholder="0" 
+                  value={view.state.userInput || ''}
+                  onChange={(e) => handleInputChange(e.target.value)}
+                  disabled={view.showSuccess}
+                />
+                <span className="unit-tag">{currentQuestion.unit_label}</span>
               </div>
-            ) : (
-              <div className="options-list">
-                <label>選擇方案：</label>
-                {currentQuestion.options.map((opt) => (
-                  <button
-                    key={opt.value}
-                    className={`option-card ${selectedOption === opt.value ? 'selected' : ''}`}
-                    onClick={() => setSelectedOption(opt.value)}
-                    disabled={feedback?.type === 'success'}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            )}
+            </div>
 
-            {feedback && (
-              <div className={`status-box ${feedback.type}`}>
-                {feedback.msg}
+            {view.showSuccess && (
+              <div className="status-box success">
+                正確！數值已穩定，授權通過。
               </div>
             )}
 
@@ -132,17 +108,17 @@ const InterstellarGame = () => {
           </div>
 
           <footer className="action-bar">
-            {!showHint && feedback?.type !== 'success' && (
+            {!showHint && !view.showSuccess && (
               <button className="btn-secondary" onClick={() => setShowHint(true)}>
                 獲取支援
               </button>
             )}
             
-            {feedback?.type !== 'success' ? (
+            {!view.showSuccess ? (
               <button 
                 className="btn-primary" 
                 onClick={handleSubmit}
-                disabled={currentQuestion.type === 'numeric' ? !userInput : !selectedOption}
+                disabled={!view.state.userInput}
               >
                 執行命令
                 <Target size={18} />
@@ -158,7 +134,7 @@ const InterstellarGame = () => {
 
         <div className="footer-links">
           <Link to="/" className="exit-link">
-            <ArrowLeft size={14} /> 放棄任務
+            <ArrowLeft size={14} /> 中止任務
           </Link>
         </div>
       </div>
