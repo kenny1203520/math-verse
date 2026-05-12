@@ -79,15 +79,30 @@ const InterstellarGame = () => {
           <h1>{currentQuestion.title}</h1>
         </header>
 
-        <section className="question-content">
-          <div className="unit-label">{currentQuestion.unit}</div>
-          <p className="scenario-text">{currentQuestion.scenario}</p>
-          <p className="main-question">{currentQuestion.question}</p>
+        <section className="quest-log-content">
+          
+          <div className="quest-briefing">
+             <div className="terminal-header">
+                <span className="terminal-dot red"></span>
+                <span className="terminal-dot yellow"></span>
+                <span className="terminal-dot green"></span>
+                <span className="terminal-title">INCOMING TRANSMISSION // {currentQuestion.unit}</span>
+             </div>
+             <p className="terminal-text">{currentQuestion.scenario}</p>
+          </div>
+
+          <div className="quest-objective">
+             <div className="objective-title">
+               <Target size={16} /> MISSION OBJECTIVE
+             </div>
+             <p>{currentQuestion.question}</p>
+          </div>
 
           <div className="interaction-area">
-            <div className="input-wrapper">
-              <label>調整數值：</label>
-              <div className="numeric-control">
+            <div className="resource-allocation">
+              <label>RESOURCE ALLOCATION // 調整配置數值</label>
+              <div className="numeric-control terminal-input">
+                <span className="input-prefix">&gt;</span>
                 <input 
                   type="number" 
                   placeholder="0" 

@@ -595,54 +595,99 @@ body {
   background: var(--teal);
 }
 
-.question-content {
+/* --- RPG Quest Log UI --- */
+.quest-log-content {
   flex: 1;
-  background: var(--surface);
+  background: rgba(15, 23, 42, 0.85); /* Dark terminal background */
   border: 1px solid var(--border);
-  border-radius: 24px;
+  border-radius: 16px;
   padding: 24px;
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(12px);
+  box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05);
 }
 
-.unit-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--primary);
-  background: rgba(59, 130, 246, 0.1);
-  padding: 4px 10px;
-  border-radius: 8px;
+.quest-briefing {
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 12px;
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #3b82f6;
+}
+.terminal-dot.red { background: #ef4444; box-shadow: 0 0 5px #ef4444; }
+.terminal-dot.yellow { background: #f59e0b; box-shadow: 0 0 5px #f59e0b; }
+.terminal-dot.green { background: #10b981; box-shadow: 0 0 5px #10b981; }
+
+.terminal-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--primary);
+  letter-spacing: 1px;
+}
+
+.terminal-text {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  line-height: 1.6;
   font-family: var(--font-mono);
 }
 
-.scenario-text {
-  color: var(--ink-soft);
-  font-size: 0.95rem;
-  font-style: italic;
-  margin-bottom: 12px;
-  line-height: 1.5;
+.quest-objective {
+  margin-bottom: 24px;
 }
 
-.main-question {
-  font-size: 1.25rem;
+.objective-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
   font-weight: 700;
-  margin-bottom: 24px;
-  line-height: 1.4;
+  color: #10b981;
+  margin-bottom: 8px;
+}
+
+.quest-objective p {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  line-height: 1.5;
 }
 
 .interaction-area {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-.input-wrapper label {
+.resource-allocation {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.resource-allocation label {
   display: block;
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-  margin-bottom: 8px;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #60a5fa;
+  margin-bottom: 12px;
+  text-transform: uppercase;
 }
 
 .numeric-control {
@@ -651,17 +696,30 @@ body {
   gap: 12px;
 }
 
+.terminal-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-prefix {
+  font-family: var(--font-mono);
+  color: #10b981;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 .numeric-control input {
-  width: 100%;
-  padding: 14px;
-  border-radius: 16px;
-  border: 2px solid var(--border);
-  background: rgba(0,0,0,0.3);
-  color: white;
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: rgba(15, 23, 42, 0.5);
+  color: #10b981;
   font-size: 1.4rem;
   font-weight: 700;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
   font-family: var(--font-mono);
 }
 
@@ -1078,3 +1136,255 @@ body {
 .stall.active .stall-hologram::after {
   background: var(--teal);
 }
+
+/* --- Isometric Pseudo-3D RPG Scene --- */
+.isometric-container {
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #0a0a1a, #000);
+  border-radius: inherit;
+}
+
+.isometric-floor {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  transform: rotateX(60deg) rotateZ(-45deg);
+  transform-style: preserve-3d;
+  background: 
+    linear-gradient(rgba(59, 130, 246, 0.2) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.2) 2px, transparent 2px);
+  background-size: 50px 50px;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 50px rgba(59, 130, 246, 0.1) inset, 0 0 20px rgba(59, 130, 246, 0.2);
+  transition: transform 0.1s ease-out; /* For optional parallax */
+}
+
+/* A billboard object that stands straight up on the floor */
+.stall-3d {
+  position: absolute;
+  width: 140px;
+  height: 180px;
+  transform-style: preserve-3d;
+  /* Reverse the Z and X rotation to face the camera */
+  transform: translate(-50%, -50%) rotateZ(45deg) rotateX(-60deg) translateY(-60px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(59, 130, 246, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.stall-3d:hover,
+.stall-3d.active {
+  transform: translate(-50%, -50%) rotateZ(45deg) rotateX(-60deg) translateY(-70px);
+  border-color: var(--teal);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.9), inset 0 0 30px rgba(16, 185, 129, 0.3);
+}
+
+.stall-3d-shadow {
+  position: absolute;
+  width: 100px;
+  height: 60px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.stall-3d .stall-hologram {
+  position: relative;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.stall-3d .stall-sign {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  padding: 8px 12px;
+  text-align: center;
+  font-family: var(--font-mono);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+  width: 100%;
+}
+
+.stall-3d.active .stall-sign {
+  border-color: var(--teal);
+}
+
+.stall-3d .stall-sign .title {
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  margin-bottom: 4px;
+}
+
+.stall-3d .stall-sign .value {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.stall-3d.active .stall-sign .value {
+  text-shadow: 0 0 10px var(--teal);
+}
+
+.floor-decorator {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border: 2px dashed rgba(59, 130, 246, 0.3);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: rotateFloor 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateFloor {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* --- True 3D CSS Stall --- */
+.true-3d-stall {
+  position: absolute;
+  /* Centered on the absolute position passed via inline style */
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 80px;
+  transform-style: preserve-3d;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+.true-3d-stall:hover,
+.true-3d-stall.active {
+  transform: translate(-50%, -50%) translateZ(15px);
+}
+
+.stall-cube-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* The Hologram Sign floats above the cube */
+.stall-hologram-sign {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Float 100px above the floor, rotate back to face camera */
+  transform: translate(-50%, -50%) translateZ(100px) rotateZ(45deg) rotateX(-60deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+.stall-hologram-sign .holo-icon {
+  margin-bottom: 10px;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+.stall-hologram-sign .holo-board {
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 6px 12px;
+  text-align: center;
+  font-family: var(--font-mono);
+  width: max-content;
+}
+
+.stall-hologram-sign .holo-board .h-title {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.stall-hologram-sign .holo-board .h-val {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* The 3D Prism Base */
+.cube-base {
+  position: absolute;
+  width: 140px;
+  height: 80px;
+  transform-style: preserve-3d;
+}
+
+.cube-face {
+  position: absolute;
+  border: 1px solid;
+  background: rgba(15, 23, 42, 0.85); /* Dark base color */
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+
+/* Front & Back: width 140px, height 60px (the Z thickness) */
+.cube-front, .cube-back {
+  width: 140px;
+  height: 60px;
+}
+/* Left & Right: width 80px (the Y depth), height 60px */
+.cube-left, .cube-right {
+  width: 80px;
+  height: 60px;
+}
+/* Top & Bottom: width 140px, height 80px */
+.cube-top, .cube-bottom {
+  width: 140px;
+  height: 80px;
+}
+
+/* Position them in 3D Space */
+/* Z is up. Height is 60px. */
+/* Front: pushed down in Y by 40px, rotated to stand up */
+.cube-front {
+  transform: translateY(40px) translateZ(30px) rotateX(-90deg);
+}
+/* Back: pushed up in Y by -40px, rotated to stand up and face back */
+.cube-back {
+  transform: translateY(-40px) translateZ(30px) rotateX(90deg);
+}
+/* Left: pushed left in X by -70px, rotated to stand up and face left */
+.cube-left {
+  /* Center is 140x80. Top-left of face is 0,0. We need to translate. */
+  transform: translateX(-40px) translateY(10px) translateZ(30px) rotateY(-90deg) rotateZ(90deg);
+}
+/* Right: pushed right in X by 70px */
+.cube-right {
+  transform: translateX(100px) translateY(10px) translateZ(30px) rotateY(90deg) rotateZ(-90deg);
+}
+/* Top: lifted up in Z by 60px */
+.cube-top {
+  transform: translateZ(60px);
+}
+/* Bottom: on the floor */
+.cube-bottom {
+  transform: translateZ(0);
+}
+
+.top-circuit {
+  position: absolute;
+  inset: 10px;
+  opacity: 0.2;
+  border-radius: 4px;
+}
+

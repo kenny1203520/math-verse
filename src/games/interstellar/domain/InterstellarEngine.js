@@ -17,39 +17,61 @@ class InterstellarEngine {
     
     if (this.currentLevel === 0) {
       // Level 1: Ratio (Crystals vs Star Coins)
-      // Controlled difficulty: multiplier 20 to 100 in steps of 10
-      const multiplier = this.getRandomInt(2, 10) * 10;
+      const ratios = [[2, 3], [3, 4], [3, 5], [4, 5], [5, 7], [2, 5], [3, 8]];
+      const selectedRatio = ratios[this.getRandomInt(0, ratios.length - 1)];
+      const ratioA = selectedRatio[0]; // Crystals
+      const ratioB = selectedRatio[1]; // Coins
+      
+      // Controlled difficulty: multiplier 10 to 50
+      const multiplier = this.getRandomInt(1, 5) * 10;
+      const targetCoins = ratioB * multiplier;
+
       this.state = {
         id: 1,
         type: 'ratio',
         unit: '比與比值 (NC-7-9-1)',
         title: '星際市集：能量交易',
-        scenario: '在 Math-Verse 的星際市集中，能量水晶與星幣的兌換比是 3：5。',
-        targetCoins: multiplier * 5,
+        scenario: `在 Math-Verse 的星際市集中，能量水晶與星幣的兌換比是 ${ratioA}：${ratioB}。`,
+        ratioA: ratioA,
+        ratioB: ratioB,
+        targetCoins: targetCoins,
         userInput: '',
-        expectedCrystals: multiplier * 3 // Only used internally if needed, but we verify mathematically
+        expectedCrystals: ratioA * multiplier
       };
-      this.state.question = `如果玩家想購買一個價值 ${this.state.targetCoins} 星幣的太空船推進器，他需要準備多少顆能量水晶？`;
+      this.state.question = `如果玩家想購買一個價值 ${targetCoins} 星幣的太空船推進器，他需要準備多少顆能量水晶？`;
       this.state.unit_label = '顆';
-      this.state.hint = '利用比例式 3：5 = 水晶：星幣，交叉相乘即可求出。';
+      this.state.hint = `利用比例式 ${ratioA}：${ratioB} = 水晶：星幣，交叉相乘即可求出。`;
     } else if (this.currentLevel === 1) {
       // Level 2: Inverse Proportion (Robots vs Time)
-      // Base: 4 robots -> 12 hours. Constant K = 48.
-      // Target time: integer divisor of 48 (2, 3, 4, 6, 8)
-      const possibleTimes = [2, 3, 4, 6, 8];
+      const baseRobots = this.getRandomInt(2, 6);
+      const baseHours = this.getRandomInt(6, 15);
+      const constantK = baseRobots * baseHours;
+      
+      // Find divisors of constantK for the targetTime
+      const divisors = [];
+      for (let i = 2; i <= constantK / 2; i++) {
+        if (constantK % i === 0) divisors.push(i);
+      }
+      
+      // If no good divisors, default to a few
+      const possibleTimes = divisors.length > 0 ? divisors : [2, 3, 4, 5, 6];
       const targetTime = possibleTimes[this.getRandomInt(0, possibleTimes.length - 1)];
+
       this.state = {
         id: 2,
         type: 'inverse',
         unit: '正比與反比 (NC-7-9-2)',
         title: '小行星採礦計畫',
-        scenario: '派遣 4 台機器人前往礦脈，需要耗時 12 小時才能清空。',
+        scenario: `派遣 ${baseRobots} 台機器人前往礦脈，需要耗時 ${baseHours} 小時才能清空。`,
+        baseRobots: baseRobots,
+        baseHours: baseHours,
+        constantK: constantK,
         targetTime: targetTime,
         userInput: ''
       };
       this.state.question = `若希望在 ${targetTime} 小時內完成任務，且每台效率相同，總共需要幾台採礦機器人？`;
       this.state.unit_label = '台';
-      this.state.hint = '這屬於「反比」關係：機器人數量 × 時間 = 定值 (4 × 12)。';
+      this.state.hint = `這屬於「反比」關係：機器人數量 × 時間 = 定值 (${baseRobots} × ${baseHours})。`;
     } else {
       // Level 3: Inequality (Cores vs Power)
       // Power = 120 + cores * 45.
@@ -84,13 +106,14 @@ class InterstellarEngine {
     let isCorrect = false;
 
     if (this.state.type === 'ratio') {
-      // Mathematical verification: 3/5 = input / targetCoins
-      if ((3 / 5) === (inputNum / this.state.targetCoins)) {
+      // Mathematical verification: ratioA / ratioB = input / targetCoins
+      // Use multiplication to avoid floating point precision issues
+      if (this.state.ratioA * this.state.targetCoins === inputNum * this.state.ratioB) {
         isCorrect = true;
       }
     } else if (this.state.type === 'inverse') {
-      // Verification: input * targetTime == 4 * 12
-      if (inputNum * this.state.targetTime === 48) {
+      // Verification: input * targetTime == baseRobots * baseHours
+      if (inputNum * this.state.targetTime === this.state.constantK) {
         isCorrect = true;
       }
     } else if (this.state.type === 'inequality') {

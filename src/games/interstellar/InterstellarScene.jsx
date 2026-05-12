@@ -1,63 +1,79 @@
 import React, { useState } from 'react';
-import { Rocket, Zap, Bot, Gem, Store, Activity } from 'lucide-react';
+import { Rocket, Zap, Bot, Gem, Activity } from 'lucide-react';
+import SciFiStall from '../../components/SciFiStall';
 
 const InterstellarScene = ({ question, state }) => {
   const { id: questionId } = question;
   const [activeStall, setActiveStall] = useState(null);
   
+  // Parallax state for mouse tracking
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    // Calculate mouse position relative to center (-1 to 1)
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width * 2 - 1;
+    const y = (e.clientY - rect.top) / rect.height * 2 - 1;
+    setMousePos({ x, y });
+  };
+
   const renderStarMarket = () => {
     const crystals = parseInt(state.userInput) || 0;
     const targetCoins = question.targetCoins || 1500;
-    const ratio = Math.min(crystals / (targetCoins * 3 / 5), 1.2) || 0;
+    const ratioA = question.ratioA || 3;
+    const ratioB = question.ratioB || 5;
+    const expectedCrystals = targetCoins * ratioA / ratioB;
+    const ratio = Math.min(crystals / expectedCrystals, 1.2) || 0;
     
+    // Parallax logic: slightly rotate the floor based on mouse position
+    // Base: rotateX(60deg) rotateZ(-45deg)
+    // Add up to 5deg rotation based on mouse
+    const rotateX = 60 - mousePos.y * 5;
+    const rotateZ = -45 + mousePos.x * 5;
+
     return (
-      <div className="rpg-scene">
-        <div className="market-layout">
+      <div className="isometric-container" onMouseMove={handleMouseMove}>
+        <div 
+          className="isometric-floor"
+          style={{ transform: `rotateX(${rotateX}deg) rotateZ(${rotateZ}deg)` }}
+        >
+          <div className="floor-decorator" />
           
           {/* Stall 1: Crystal Exchange */}
+          <div className="stall-3d-shadow" style={{ top: '30%', left: '30%' }} />
           <div 
-            className={`stall ${activeStall === 'exchange' ? 'active' : ''}`}
+            style={{ position: 'absolute', top: '30%', left: '30%', transformStyle: 'preserve-3d' }}
             onMouseEnter={() => setActiveStall('exchange')}
             onMouseLeave={() => setActiveStall(null)}
           >
-            <div className="stall-hologram">
-              <Activity size={48} color="#3b82f6" />
-            </div>
-            <div className="stall-sign">
-              <div className="title">官方匯率</div>
-              <div className="value">3 水晶 = 5 星幣</div>
-            </div>
-            {activeStall === 'exchange' && (
-              <div className="scene-hint">
-                點擊交易面板計算等比例放大率
-              </div>
-            )}
+            <SciFiStall 
+              color="#3b82f6" 
+              title="官方匯率" 
+              value={`${ratioA} 水晶 = ${ratioB} 星幣`} 
+              icon={Activity} 
+              active={activeStall === 'exchange'} 
+            />
           </div>
 
           {/* Stall 2: Thruster Shop */}
+          <div className="stall-3d-shadow" style={{ top: '70%', left: '70%' }} />
           <div 
-            className={`stall ${activeStall === 'shop' ? 'active' : ''}`}
+            style={{ position: 'absolute', top: '70%', left: '70%', transformStyle: 'preserve-3d' }}
             onMouseEnter={() => setActiveStall('shop')}
             onMouseLeave={() => setActiveStall(null)}
           >
-            <div className="stall-hologram">
-              <Rocket size={48} color="#10b981" style={{ filter: `brightness(${0.5 + ratio * 0.8})` }} />
-            </div>
-            <div className="stall-sign">
-              <div className="title">推進器售價</div>
-              <div className="value">{targetCoins} 星幣</div>
-            </div>
-            {activeStall === 'shop' && (
-              <div className="scene-hint">
-                目標道具，需要準備等值的水晶
-              </div>
-            )}
+            <SciFiStall 
+              color="#10b981" 
+              title="推進器售價" 
+              value={`${targetCoins} 星幣`} 
+              icon={Rocket} 
+              active={activeStall === 'shop'} 
+            />
           </div>
-
         </div>
 
         {/* Global Progress or UI in scene */}
-        <div className="core-stats" style={{ position: 'absolute', bottom: '20px' }}>
+        <div className="core-stats" style={{ position: 'absolute', bottom: '20px', zIndex: 10 }}>
           <div className="stat" style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid #3b82f6' }}>
             <Gem size={14} color="#60a5fa" />
             <span style={{ color: '#60a5fa' }}>{crystals} 顆預備水晶</span>
@@ -66,6 +82,7 @@ const InterstellarScene = ({ question, state }) => {
       </div>
     );
   };
+
 
   const renderMiningBots = () => {
     const bots = parseInt(state.userInput) || 0;
